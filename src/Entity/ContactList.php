@@ -22,8 +22,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     description: 'Contact lists',
     operations: [
-        new Post(),
-        new Patch()
+        new Post(
+            security: "is_granted('ROLE_USER')"
+        ),
+        new Patch(
+            security: "is_granted('ROLE_USER')"
+        )
     ],
     normalizationContext: ['groups' => ['contact_list:read']],
     denormalizationContext: ['groups' => ['contact_list:write']]
@@ -54,7 +58,7 @@ class ContactList
     #[Groups(['contact_list:read','user:read'])]
     private ?\DateTimeImmutable $updated_at = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'contactLists')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['contact_list:read','contact_list:write'])]
     #[Assert\Valid]

@@ -25,14 +25,26 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     description: 'Users',
     operations: [
-        new Post(uriTemplate: '/register', normalizationContext: ['groups' => ['user:read']], denormalizationContext: ['groups' => ['user:write']]),
-        new Patch(uriTemplate: '/me/{id}', normalizationContext: ['groups' => ['user:read']], denormalizationContext: ['groups' => ['user:write']]),
-        new Delete(uriTemplate: '/me/{id}'),
+        new Post(
+            uriTemplate: '/register',
+            normalizationContext: ['groups' => ['user:read']],
+            denormalizationContext: ['groups' => ['user:write']],
+            security: "is_granted('PUBLIC_ACCESS')"
+        ),
+        new Patch(uriTemplate: '/me/{id}',
+            normalizationContext: ['groups' => ['user:read']],
+            denormalizationContext: ['groups' => ['user:write']],
+            security: "is_granted('ROLE_USER')"
+        ),
+        new Delete(
+            uriTemplate: '/me/{id}',
+            security: "is_granted('ROLE_USER')"
+            ),
     ],
     normalizationContext: ['groups' => ['user:read']],
     denormalizationContext: ['groups' => ['user:write']]
 )]
-class User implements PasswordAuthenticatedUserInterface, UserInterface
+class User implements UserInterface,PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
