@@ -1,0 +1,17 @@
+/vendor/
+var/
+.env.local
+.env.*.local
+.env.test
+/public/build/
+/public/bundles/
+node_modules/
+/yarn.lock
+/package-lock.json
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+config/jwt/*.pem
