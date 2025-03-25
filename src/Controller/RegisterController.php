@@ -3,16 +3,12 @@
 namespace App\Controller;
 
 use App\Dto\RegisterUserDto;
-use App\Entity\User;
 use App\Service\RegisterUserHandler;
-use Doctrine\ORM\EntityManagerInterface;
-use Nelmio\ApiDocBundle\Attribute\Model;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use OpenApi\Attributes as OA;
 use ApiPlatform\Metadata\ApiResource;
@@ -20,6 +16,9 @@ use ApiPlatform\Metadata\ApiResource;
 #[ApiResource]
 class RegisterController extends AbstractController
 {
+    const USER_CREATED_SUCCESSFULLY = 'User created successfully';
+    const VALIDATION_FAILED = 'Validation failed';
+
     #[Route('api/register', name: 'user_register', methods: ['POST'])]
     #[OA\Post(
         path: '/api/register',
@@ -36,8 +35,8 @@ class RegisterController extends AbstractController
         ),
         tags: ['User'],
         responses: [
-            new OA\Response(response: 201, description: 'User created successfully'),
-            new OA\Response(response: 400, description: 'Validation failed'),
+            new OA\Response(response: 201, description: self::USER_CREATED_SUCCESSFULLY),
+            new OA\Response(response: 400, description: self::VALIDATION_FAILED),
         ]
     )]
     #[OA\Tag(name: 'Authentication')]
@@ -59,7 +58,7 @@ class RegisterController extends AbstractController
         $registerUserHandler->handle($dto);
 
         return $this->json([
-            'message' => 'User created successfully'
+            'message' => self::USER_CREATED_SUCCESSFULLY
         ], Response::HTTP_CREATED);
     }
 }
