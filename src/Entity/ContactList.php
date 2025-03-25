@@ -5,10 +5,10 @@ namespace App\Entity;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use ApiPlatform\Serializer\Filter\PropertyFilter;
 use App\Repository\ContactListRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             security: "is_granted('ROLE_USER')"
         ),
         new Patch(
-            security: "is_granted('ROLE_USER')"
+            security: "is_granted('ROLE_USER') and object.getOwner() == user"
         )
     ],
     normalizationContext: ['groups' => ['contact_list:read']],

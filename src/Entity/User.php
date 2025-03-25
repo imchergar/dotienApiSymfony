@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Serializer\Filter\PropertyFilter;
@@ -35,13 +36,19 @@ use Symfony\Component\Validator\Constraints as Assert;
             name: 'user_register'
         ),
         new Patch(uriTemplate: '/me/{id}',
+            uriVariables: [
+                'id' => new Link(fromClass: User::class, identifiers: ['id']),
+            ],
             normalizationContext: ['groups' => ['user:read']],
             denormalizationContext: ['groups' => ['user:write']],
-            security: "is_granted('ROLE_USER')"
+            security: "is_granted('ROLE_USER') and object == user"
         ),
         new Delete(
             uriTemplate: '/me/{id}',
-            security: "is_granted('ROLE_USER')"
+            uriVariables: [
+                'id' => new Link(fromClass: User::class, identifiers: ['id']),
+            ],
+            security: "is_granted('ROLE_USER') and object == user"
             ),
         ],
         normalizationContext: ['groups' => ['user:read']],
@@ -235,4 +242,5 @@ class User implements UserInterface,PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
 }
