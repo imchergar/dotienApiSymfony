@@ -43,9 +43,9 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/me/{id}',
             security: "is_granted('ROLE_USER')"
             ),
-    ],
-    normalizationContext: ['groups' => ['user:read']],
-    denormalizationContext: ['groups' => ['user:write']]
+        ],
+        normalizationContext: ['groups' => ['user:read']],
+        denormalizationContext: ['groups' => ['user:write']]
 )]
 class User implements UserInterface,PasswordAuthenticatedUserInterface
 {

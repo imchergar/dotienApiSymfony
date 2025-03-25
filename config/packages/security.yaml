@@ -37,7 +37,7 @@ security:
     access_control:
         - { path: ^/api/register, roles: PUBLIC_ACCESS }
         - { path: ^/api/login_check, roles: PUBLIC_ACCESS }
-        - { path: ^/api, roles: PUBLIC_ACCESS }
+        - { path: ^/api/contact_list, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:

@@ -3,11 +3,4 @@ nelmio_api_doc:
         info:
             title: 'My API'
             version: '1.0.0'
-        components:
-            securitySchemes:
-                Bearer:
-                    type: http
-                    scheme: bearer
-                    bearerFormat: JWT
-        security:
-            - Bearer: [ ]
+
