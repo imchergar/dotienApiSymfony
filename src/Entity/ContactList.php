@@ -22,12 +22,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     description: 'Contact lists',
     operations: [
-        new Post(
-            security: "is_granted('ROLE_USER')"
-        ),
-        new Patch(
-            security: "is_granted('ROLE_USER')"
-        )
+        new Post(),
+        new Patch()
     ],
     normalizationContext: ['groups' => ['contact_list:read']],
     denormalizationContext: ['groups' => ['contact_list:write']]

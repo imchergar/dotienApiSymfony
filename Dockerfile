@@ -14,6 +14,15 @@ RUN docker-php-ext-install pdo pdo_mysql bcmath \
 
 RUN docker-php-ext-install gd
 
+#install xdebug
+RUN pecl install xdebug-3.3.1 \
+    && docker-php-ext-enable xdebug \
+    && echo "\
+xdebug.mode=debug,develop \n\
+xdebug.client_host=host.docker.internal \n\
+xdebug.idekey=PHPSTORM" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+RUN rm -f /etc/php/conf.d/xdebug.ini.template
+
 # install composer
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 

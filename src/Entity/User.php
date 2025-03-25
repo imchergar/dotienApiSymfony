@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Serializer\Filter\PropertyFilter;
+use App\Controller\RegisterController;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -27,9 +28,11 @@ use Symfony\Component\Validator\Constraints as Assert;
     operations: [
         new Post(
             uriTemplate: '/register',
+            controller: RegisterController::class,
             normalizationContext: ['groups' => ['user:read']],
             denormalizationContext: ['groups' => ['user:write']],
-            security: "is_granted('PUBLIC_ACCESS')"
+            security: "is_granted('ROLE_USER')",
+            name: 'user_register'
         ),
         new Patch(uriTemplate: '/me/{id}',
             normalizationContext: ['groups' => ['user:read']],
@@ -69,10 +72,6 @@ class User implements UserInterface,PasswordAuthenticatedUserInterface
     #[Assert\Length(
         min: 8,
         minMessage: "Password must be at least 8 characters long."
-    )]
-    #[Assert\Regex(
-        pattern: "/^(?=.*[A-Za-z])(?=.*\d).+$/",
-        message: "Password must contain at least one letter and one number."
     )]
     private ?string $password = null;
 
