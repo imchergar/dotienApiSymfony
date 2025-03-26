@@ -55,10 +55,14 @@ class RegisterController extends AbstractController
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        $registerUserHandler->handle($dto);
+        $user = $registerUserHandler->handle($dto);
 
         return $this->json([
-            'message' => self::USER_CREATED_SUCCESSFULLY
+            'user' => [
+                'id'    => $user->getId(),
+                'email' => $user->getEmail(),
+            ],
+            'message' => self::USER_CREATED_SUCCESSFULLY,
         ], Response::HTTP_CREATED);
     }
 }
